@@ -1,7 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-
-CREATE TABLE  customer
+CREATE TABLE customer
 (
     id                     uuid         NOT NULL DEFAULT uuid_generate_v4(),
     first_name              varchar(255)         NOT NULL,
