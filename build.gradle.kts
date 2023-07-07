@@ -45,6 +45,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+
+    implementation("org.springframework.security:spring-security-crypto:6.1.1")
 }
 
 tasks.withType<KotlinCompile> {
