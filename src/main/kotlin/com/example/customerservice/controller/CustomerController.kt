@@ -1,13 +1,16 @@
 package com.example.customerservice.controller
 
 import com.example.customerservice.domain.dto.request.CreateCustomerRequest
+import com.example.customerservice.domain.dto.request.LoginRequest
 import com.example.customerservice.domain.dto.request.UpdateCustomerRequest
 import com.example.customerservice.domain.dto.response.CustomerResponse
 import com.example.customerservice.domain.mapper.CustomerMapper
 import com.example.customerservice.domain.model.Customer
 import com.example.customerservice.service.CustomerService
 import org.mapstruct.factory.Mappers
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -23,6 +26,8 @@ import java.util.UUID
 class CustomerController(
     private val customerService: CustomerService,
 ) {
+    @Autowired
+    lateinit var passwordEncoder: BCryptPasswordEncoder
     @GetMapping("")
     suspend fun getAll(): List<CustomerResponse>{
         val converter = Mappers.getMapper(CustomerMapper::class.java)
@@ -34,6 +39,11 @@ class CustomerController(
         val converter = Mappers.getMapper(CustomerMapper::class.java)
         val customer = customerService.getById(id)
         return converter.customerToResponse(customer)
+    }
+
+    @PostMapping("/login")
+    suspend fun login(@RequestBody loginRequest: LoginRequest): Customer{
+        return customerService.login(loginRequest)
     }
 
     @PostMapping("")

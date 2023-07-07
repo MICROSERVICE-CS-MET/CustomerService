@@ -1,6 +1,6 @@
 package com.example.customerservice.service
 
-import com.example.customerservice.configuration.PasswordEncoder
+import com.example.customerservice.domain.dto.request.LoginRequest
 import com.example.customerservice.domain.model.Customer
 import com.example.customerservice.exception.NotFoundException
 import com.example.customerservice.repositoy.CustomerRepository
@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.toList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import java.lang.RuntimeException
 import java.util.UUID
 
 @Service
@@ -22,12 +23,15 @@ class CustomerService(
     }
 
     suspend fun save(customer: Customer): Customer{
+        customerRepository.findByMail(customer.mail)?.let { throw RuntimeException("Customer already existed, use different mail!") }
+        customerRepository.findByUsername(customer.username)?.let{ throw RuntimeException("Customer already existed, use different username!") }
+
         customer.password = passwordEncoder.encode(customer.password)
         return customerRepository.save(customer)
     }
 
     suspend fun getById(id:UUID): Customer{
-        return customerRepository.findById(id) ?: throw NotFoundException("Customer not found")
+        return customerRepository.findById(id) ?: throw RuntimeException("Customer not found")
     }
 
     suspend fun delete(id:UUID){
@@ -38,4 +42,11 @@ class CustomerService(
         return customerRepository.save(customer)
     }
 
+    suspend fun login(customer: LoginRequest): Customer{
+        val optionalCustomer = customerRepository.findByUsername(customer.username) ?: throw NotFoundException("Customer not found")
+        if(passwordEncoder.matches(customer.password, optionalCustomer.password)){
+            return optionalCustomer
+        }
+        throw RuntimeException("Password not matched!")
+    }
 }
