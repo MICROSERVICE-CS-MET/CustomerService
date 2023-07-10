@@ -1,6 +1,5 @@
 package com.example.customerservice.domain.model
 
-import org.reactivestreams.Publisher
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 import java.util.*
