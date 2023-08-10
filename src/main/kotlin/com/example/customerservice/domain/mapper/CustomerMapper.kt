@@ -10,10 +10,9 @@ import org.mapstruct.Mapper
 interface CustomerMapper {
     fun createRequestToCustomer(customerTo: CreateCustomerRequest): Customer
 
-    fun customerToResponse(customer: Customer):CustomerResponse
+    fun customerToResponse(customer: Customer): CustomerResponse
 
     fun customersToCustomerResponse(customers: List<Customer>): List<CustomerResponse>
 
     fun updateCustomerRequestToCustomer(updateCustomerRequest: UpdateCustomerRequest): Customer
-
 }

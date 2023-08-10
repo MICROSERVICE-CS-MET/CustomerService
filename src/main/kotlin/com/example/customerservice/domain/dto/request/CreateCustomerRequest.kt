@@ -1,6 +1,5 @@
 package com.example.customerservice.domain.dto.request
 
-
 data class CreateCustomerRequest(
     var firstName: String,
     var lastName: String,

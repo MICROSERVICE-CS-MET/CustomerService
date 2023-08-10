@@ -6,7 +6,7 @@ import java.util.*
 
 @Table
 data class Customer(
-    @Id val id: UUID?=null,
+    @Id val id: UUID? = null,
     var firstName: String,
     var lastName: String,
     var username: String,

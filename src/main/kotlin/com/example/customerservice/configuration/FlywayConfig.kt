@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
 
 @Configuration
-class FlywayConfig (
+class FlywayConfig(
     private val env: Environment
 ) {
 

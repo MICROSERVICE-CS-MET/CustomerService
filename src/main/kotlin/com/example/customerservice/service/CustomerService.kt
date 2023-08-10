@@ -5,8 +5,7 @@ import com.example.customerservice.domain.model.Customer
 import com.example.customerservice.exception.NotFoundException
 import com.example.customerservice.repository.CustomerRepository
 import kotlinx.coroutines.flow.toList
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.lang.RuntimeException
 import java.util.UUID
@@ -14,37 +13,35 @@ import java.util.UUID
 @Service
 class CustomerService(
     private val customerRepository: CustomerRepository,
+    private val passwordEncoder: PasswordEncoder
 
-){
-    @Autowired
-    lateinit var passwordEncoder: BCryptPasswordEncoder
-    suspend fun getAll(): List<Customer>{
+) {
+    suspend fun getAll(): List<Customer> {
         return customerRepository.findAll().toList()
     }
 
-    suspend fun save(customer: Customer): Customer{
+    suspend fun save(customer: Customer): Customer {
         customerRepository.findByMail(customer.mail)?.let { throw RuntimeException("Customer already existed, use different mail!") }
-        customerRepository.findByUsername(customer.username)?.let{ throw RuntimeException("Customer already existed, use different username!") }
-
+        customerRepository.findByUsername(customer.username)?.let { throw RuntimeException("Customer already existed, use different username!") }
         customer.password = passwordEncoder.encode(customer.password)
         return customerRepository.save(customer)
     }
 
-    suspend fun getById(id:UUID): Customer{
+    suspend fun getById(id: UUID): Customer {
         return customerRepository.findById(id) ?: throw RuntimeException("Customer not found")
     }
 
-    suspend fun delete(id:UUID){
+    suspend fun delete(id: UUID) {
         return customerRepository.deleteById(id)
     }
 
-    suspend fun update(customer: Customer):Customer{
+    suspend fun update(customer: Customer): Customer {
         return customerRepository.save(customer)
     }
 
-    suspend fun login(customer: LoginRequest): Customer{
+    suspend fun login(customer: LoginRequest): Customer {
         val optionalCustomer = customerRepository.findByUsername(customer.username) ?: throw NotFoundException("Customer not found")
-        if(passwordEncoder.matches(customer.password, optionalCustomer.password)){
+        if (passwordEncoder.matches(customer.password, optionalCustomer.password)) {
             return optionalCustomer
         }
         throw RuntimeException("Password not matched!")

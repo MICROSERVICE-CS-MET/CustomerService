@@ -2,7 +2,7 @@ package com.example.customerservice.domain.dto.response
 
 import java.util.*
 
-class CustomerResponse (
+class CustomerResponse(
     val id: UUID,
     var firstName: String,
     var lastName: String,

@@ -7,7 +7,7 @@ plugins {
     kotlin("plugin.spring") version "1.8.22"
     kotlin("plugin.jpa") version "1.8.22"
     kotlin("kapt") version "1.8.22"
-
+    id("org.jlleitschuh.gradle.ktlint") version "11.5.1"
 }
 
 group = "com.example"
@@ -32,13 +32,10 @@ dependencies {
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
     kapt("org.mapstruct:mapstruct-processor:1.5.5.Final")
 
-
-
     implementation("org.postgresql:r2dbc-postgresql")
     implementation("org.flywaydb:flyway-core")
     implementation("org.postgresql:postgresql")
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
-
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
@@ -47,6 +44,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
 
     implementation("org.springframework.security:spring-security-crypto:6.1.1")
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:4.0.3")
 }
 
 tasks.withType<KotlinCompile> {
