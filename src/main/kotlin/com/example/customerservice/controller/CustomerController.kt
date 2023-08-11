@@ -22,10 +22,14 @@ import java.util.UUID
 
 @RestController
 @RequestMapping("/customers")
-@CrossOrigin("*")
 class CustomerController(private val customerService: CustomerService) {
 
-    @GetMapping("")
+    @GetMapping("/test")
+    fun test(): String{
+        return "test"
+    }
+
+    @GetMapping()
     suspend fun getAll(): List<CustomerResponse> {
         val converter = Mappers.getMapper(CustomerMapper::class.java)
         return converter.customersToCustomerResponse(customerService.getAll())

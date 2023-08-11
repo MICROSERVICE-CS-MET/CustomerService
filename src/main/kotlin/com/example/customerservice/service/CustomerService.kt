@@ -40,7 +40,7 @@ class CustomerService(
     }
 
     suspend fun login(customer: LoginRequest): Customer {
-        val optionalCustomer = customerRepository.findByUsername(customer.username) ?: throw NotFoundException("Customer not found")
+        val optionalCustomer = customerRepository.findByUsername(customer.email) ?: throw NotFoundException("Customer not found")
         if (passwordEncoder.matches(customer.password, optionalCustomer.password)) {
             return optionalCustomer
         }

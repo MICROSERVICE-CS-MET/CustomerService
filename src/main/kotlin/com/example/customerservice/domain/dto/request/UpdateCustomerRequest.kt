@@ -4,8 +4,7 @@ import java.util.*
 
 data class UpdateCustomerRequest(
     val id: UUID,
-    var firstName: String,
-    var lastName: String,
+    var fullName: String,
     var username: String,
     var password: String,
     var mail: String
