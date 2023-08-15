@@ -21,8 +21,7 @@ class CustomerService(
     }
 
     suspend fun save(customer: Customer): Customer {
-        customerRepository.findByMail(customer.mail)?.let { throw RuntimeException("Customer already existed, use different mail!") }
-        customerRepository.findByUsername(customer.username)?.let { throw RuntimeException("Customer already existed, use different username!") }
+        customerRepository.findByEmail(customer.email)?.let { throw RuntimeException("Customer already existed, use different mail!") }
         customer.password = passwordEncoder.encode(customer.password)
         return customerRepository.save(customer)
     }
@@ -40,10 +39,14 @@ class CustomerService(
     }
 
     suspend fun login(customer: LoginRequest): Customer {
-        val optionalCustomer = customerRepository.findByUsername(customer.email) ?: throw NotFoundException("Customer not found")
+        val optionalCustomer = customerRepository.findByEmail(customer.email)?: throw NotFoundException("Customer not found")
         if (passwordEncoder.matches(customer.password, optionalCustomer.password)) {
             return optionalCustomer
         }
         throw RuntimeException("Password not matched!")
+    }
+
+    suspend fun findByEmail(email: String): Customer{
+        return customerRepository.findByEmail(email)?: throw NotFoundException("Customer not found")
     }
 }

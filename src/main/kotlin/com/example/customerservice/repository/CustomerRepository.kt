@@ -5,7 +5,6 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import java.util.*
 
 interface CustomerRepository : CoroutineCrudRepository<Customer, UUID> {
-    suspend fun findByUsername(userName: String): Customer?
 
-    suspend fun findByMail(mail: String): Customer?
+    suspend fun findByEmail(mail: String): Customer?
 }

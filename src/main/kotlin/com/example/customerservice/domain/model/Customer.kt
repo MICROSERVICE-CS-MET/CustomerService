@@ -8,7 +8,6 @@ import java.util.*
 data class Customer(
     @Id val id: UUID? = null,
     var fullName: String,
-    var username: String,
     var password: String,
-    var mail: String
+    var email: String
 )

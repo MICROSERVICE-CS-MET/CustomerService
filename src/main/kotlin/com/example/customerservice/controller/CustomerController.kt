@@ -9,7 +9,6 @@ import com.example.customerservice.domain.model.Customer
 import com.example.customerservice.service.CustomerService
 import org.mapstruct.factory.Mappers
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -29,7 +28,12 @@ class CustomerController(private val customerService: CustomerService) {
         return "test"
     }
 
-    @GetMapping()
+    @GetMapping("/findAll")
+    suspend fun findAll(): List<Customer>{
+        return customerService.getAll()
+    }
+
+    @GetMapping("/getAll")
     suspend fun getAll(): List<CustomerResponse> {
         val converter = Mappers.getMapper(CustomerMapper::class.java)
         return converter.customersToCustomerResponse(customerService.getAll())
@@ -42,12 +46,18 @@ class CustomerController(private val customerService: CustomerService) {
         return converter.customerToResponse(customer)
     }
 
+    @GetMapping("/findByEmail/{email}")
+    suspend fun findByEmail(@PathVariable("email") email: String): CustomerResponse{
+        val converter = Mappers.getMapper(CustomerMapper::class.java)
+        return converter.customerToResponse(customerService.findByEmail(email))
+    }
+
     @PostMapping("/login")
     suspend fun login(@RequestBody loginRequest: LoginRequest): Customer {
         return customerService.login(loginRequest)
     }
 
-    @PostMapping("")
+    @PostMapping("/register")
     suspend fun save(@RequestBody customerRequest: CreateCustomerRequest): CustomerResponse {
         val converter = Mappers.getMapper(CustomerMapper::class.java)
         val savedCustomer = customerService.save(converter.createRequestToCustomer(customerRequest))
