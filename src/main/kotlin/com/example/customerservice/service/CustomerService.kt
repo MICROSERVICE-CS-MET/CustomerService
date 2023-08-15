@@ -39,14 +39,14 @@ class CustomerService(
     }
 
     suspend fun login(customer: LoginRequest): Customer {
-        val optionalCustomer = customerRepository.findByEmail(customer.email)?: throw NotFoundException("Customer not found")
+        val optionalCustomer = customerRepository.findByEmail(customer.email) ?: throw NotFoundException("Customer not found")
         if (passwordEncoder.matches(customer.password, optionalCustomer.password)) {
             return optionalCustomer
         }
         throw RuntimeException("Password not matched!")
     }
 
-    suspend fun findByEmail(email: String): Customer{
-        return customerRepository.findByEmail(email)?: throw NotFoundException("Customer not found")
+    suspend fun findByEmail(email: String): Customer {
+        return customerRepository.findByEmail(email) ?: throw NotFoundException("Customer not found")
     }
 }

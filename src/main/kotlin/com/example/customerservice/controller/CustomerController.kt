@@ -24,12 +24,12 @@ import java.util.UUID
 class CustomerController(private val customerService: CustomerService) {
 
     @GetMapping("/test")
-    fun test(): String{
+    fun test(): String {
         return "test"
     }
 
     @GetMapping("/findAll")
-    suspend fun findAll(): List<Customer>{
+    suspend fun findAll(): List<Customer> {
         return customerService.getAll()
     }
 
@@ -47,7 +47,7 @@ class CustomerController(private val customerService: CustomerService) {
     }
 
     @GetMapping("/findByEmail/{email}")
-    suspend fun findByEmail(@PathVariable("email") email: String): CustomerResponse{
+    suspend fun findByEmail(@PathVariable("email") email: String): CustomerResponse {
         val converter = Mappers.getMapper(CustomerMapper::class.java)
         return converter.customerToResponse(customerService.findByEmail(email))
     }
