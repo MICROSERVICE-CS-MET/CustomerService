@@ -23,11 +23,6 @@ import java.util.UUID
 @RequestMapping("/customers")
 class CustomerController(private val customerService: CustomerService) {
 
-    @GetMapping("/test")
-    fun test(): String {
-        return "test"
-    }
-
     @GetMapping("/findAll")
     suspend fun findAll(): List<Customer> {
         return customerService.getAll()
