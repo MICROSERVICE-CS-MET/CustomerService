@@ -23,12 +23,7 @@ import java.util.UUID
 @RequestMapping("/customers")
 class CustomerController(private val customerService: CustomerService) {
 
-    @GetMapping("/findAll")
-    suspend fun findAll(): List<Customer> {
-        return customerService.getAll()
-    }
-
-    @GetMapping("/getAll")
+    @GetMapping("/get-all")
     suspend fun getAll(): List<CustomerResponse> {
         val converter = Mappers.getMapper(CustomerMapper::class.java)
         return converter.customersToCustomerResponse(customerService.getAll())
@@ -42,13 +37,13 @@ class CustomerController(private val customerService: CustomerService) {
     }
 
     @GetMapping("/findByEmail/{email}")
-    suspend fun getByEmail(@PathVariable("email") email: String): CustomerResponse {
+    suspend fun findByEmail(@PathVariable("email") email: String): CustomerResponse {
         val converter = Mappers.getMapper(CustomerMapper::class.java)
         return converter.customerToResponse(customerService.findByEmail(email))
     }
 
-    @PostMapping("/login")
-    suspend fun login(@RequestBody loginRequest: LoginRequest): Customer {
+    @PostMapping("/validate-user")
+    suspend fun validateUser(@RequestBody loginRequest: LoginRequest): Customer {
         return customerService.login(loginRequest)
     }
 
@@ -65,7 +60,8 @@ class CustomerController(private val customerService: CustomerService) {
         return ResponseEntity.ok("Customer deleted!")
     }
 
-    @PatchMapping("")
+    //PutMapping
+    @PatchMapping
     suspend fun update(@RequestBody updateCustomerRequest: UpdateCustomerRequest): CustomerResponse {
         val converter = Mappers.getMapper(CustomerMapper::class.java)
         val updatedCustomer = customerService.update(converter.updateCustomerRequestToCustomer(updateCustomerRequest))
