@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
+import org.springframework.web.bind.annotation.PutMapping
 
 @RestController
 @RequestMapping("/customers")
@@ -61,7 +62,7 @@ class CustomerController(private val customerService: CustomerService) {
     }
 
     //PutMapping
-    @PatchMapping
+    @PutMapping
     suspend fun update(@RequestBody updateCustomerRequest: UpdateCustomerRequest): CustomerResponse {
         val converter = Mappers.getMapper(CustomerMapper::class.java)
         val updatedCustomer = customerService.update(converter.updateCustomerRequestToCustomer(updateCustomerRequest))
