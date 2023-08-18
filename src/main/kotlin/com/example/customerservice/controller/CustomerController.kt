@@ -42,7 +42,7 @@ class CustomerController(private val customerService: CustomerService) {
     }
 
     @GetMapping("/findByEmail/{email}")
-    suspend fun findByEmail(@PathVariable("email") email: String): CustomerResponse {
+    suspend fun getByEmail(@PathVariable("email") email: String): CustomerResponse {
         val converter = Mappers.getMapper(CustomerMapper::class.java)
         return converter.customerToResponse(customerService.findByEmail(email))
     }
